@@ -12,6 +12,32 @@ $tablas = $adminBiz->getTablas();
     <meta charset="UTF-8">
     <title>Administración del Sistema</title>
     <link rel="stylesheet" href="<?php echo CSS_URL; ?>">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <?php
@@ -21,8 +47,8 @@ $tablas = $adminBiz->getTablas();
     <main>
         <h2>Seleccionar Área para Administrar</h2>
         <ul>
-            <li><a href="Personal/Personal.php">Administración de Personal</a></li>
-            <li><a href="Productos/productos.php">Administración de Productos</a></li>
+            <li><a href="personal/Personal.php">Administración de Personal</a></li>
+            <li><a href="productos/productos.php">Administración de Productos</a></li>
         </ul>
     </main>
     <?php include FOOTER_URL; ?>
