@@ -1,0 +1,243 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: #333;
+    margin: 0;
+    padding: 0 20px;
+    padding-top: 80px; /* Ajustar para el header */
+    padding-bottom: 60px; /* Ajustar para el footer */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* Asegura que el body cubra al menos toda la altura de la ventana */
+}
+
+header {
+    width: 100%;
+    background-color: rgba(76, 175, 80, 0.8);
+    padding: -30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+header img {
+    height: 70px;
+    cursor: pointer;
+}
+
+header h1 {
+    color: #fff;
+    font-size: 24px;
+    margin: 0;
+}
+
+main {
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1; /* Permite que el main crezca para ocupar el espacio disponible */
+}
+
+footer {
+    padding: 10px;
+    background-color: rgba(76, 175, 80, 0.8);
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+}
+
+/*.button-primary {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-primary:hover {
+    background-color: #45a049;
+}*/
+form {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en varias líneas */
+    gap: 15px;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: calc(50% - 15px); /* Asegura que dos elementos ocupen el 100% del ancho con el gap */
+}
+
+form input, form select, form button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el ancho total */
+}
+
+form input:focus, form select:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+form select[multiple] {
+    height: auto;
+    resize: vertical;
+}
+
+form button {
+    align-self: flex-end;
+}
+
+/* Estilos de navegación y encabezado */
+.nav-menu {
+    background-color: #009879;
+    overflow: hidden;
+    margin-top: 60px; /* Ajuste para evitar que el menú quede escondido debajo del header */
+}
+
+.nav-menu a {
+    float: left;
+    display: block;
+    color: #ffffff;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.nav-menu a:hover {
+    background-color: #007a63;
+}
+
+.nav-menu a.active {
+    background-color: #005f49;
+}
+
+.main-content {
+    margin-top: 20px;
+}
+
+.welcome-section {
+    text-align: center;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de tablas y paginación */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #dddddd;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.table-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 8px 16px;
+    margin: 2px;
+    border: 1px solid #dddddd;
+    background-color: #ffffff;
+    color: #333333;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #009879;
+    color: #ffffff;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #009879;
+    color: #ffffff;
+    border: none;
+}
+
+.dataTables_wrapper .dataTables_length select, .dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #dddddd;
+    padding: 6px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.dataTables_wrapper .dataTables_info {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.dataTables_wrapper .dataTables_length {
+    margin: 10px 0;
+    font-size: 14px;
+}
+.button-primary {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 200px; /* Cambiar para evitar que ocupen todo el ancho */
+    min-width: 100px; /* Añadir para dar un tamaño mínimo */
+    display: inline-block; /* Asegurar que los botones estén en línea */
+}
+
+.button-primary:hover {
+    background-color: #45a049;
+}
