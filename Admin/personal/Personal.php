@@ -6,6 +6,13 @@ include_once BASE_DR . 'Admin/Personal/PersBiz.php';
 $persBiz = new PersBiz();
 $personas = $persBiz->getPersonas();
 $roles = $persBiz->getRoles();
+
+function validateInput($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,6 +20,85 @@ $roles = $persBiz->getRoles();
     <meta charset="UTF-8">
     <title>Administración de Personal</title>
     <link rel="stylesheet" href="<?php echo CSS_URL; ?>">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+        header, main, footer {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .button-primary {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button-primary:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f9;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+    function validateForm() {
+        var nombre = document.forms["adminForm"]["nombre"].value;
+        if (nombre == "") {
+            alert("El nombre debe ser llenado");
+            return false;
+        }
+        // Agregar más validaciones según sea necesario
+    }
+    function toggleForm() {
+        var form = document.getElementById('addPersonForm');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+    </script>
 </head>
 <body>
     <?php
@@ -23,12 +109,12 @@ $roles = $persBiz->getRoles();
         <h2>Administrar Personas</h2>
         
         <!-- Botón para agregar personas -->
-        <button onclick="document.getElementById('addPersonForm').style.display='block'">Agregar Persona</button>
+        <button class="button-primary" onclick="toggleForm()">Agregar Persona</button>
 
         <!-- Formulario para agregar personas y roles -->
         <div id="addPersonForm" style="display:none;">
             <h2>Agregar Nueva Persona</h2>
-            <form action="Personal.php" method="post">
+            <form name="adminForm" action="Personal.php" method="post" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label for="rut">RUT:</label>
                     <input type="text" name="rut" id="rut" required>
@@ -84,9 +170,9 @@ $roles = $persBiz->getRoles();
         </table>
         <?php
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $rut = htmlspecialchars(strip_tags($_POST['rut']));
-            $nombre = htmlspecialchars(strip_tags($_POST['nombre']));
-            $fono = htmlspecialchars(strip_tags($_POST['fono']));
+            $rut = validateInput($_POST['rut']);
+            $nombre = validateInput($_POST['nombre']);
+            $fono = validateInput($_POST['fono']);
             $ROL_id = $_POST['ROL_id'];
 
             $data = [
@@ -100,7 +186,7 @@ $roles = $persBiz->getRoles();
             foreach ($ROL_id as $rol) {
                 $roleData = [
                     'PERSONA_rut' => $rut,
-                    'ROL_id' => htmlspecialchars(strip_tags($rol))
+                    'ROL_id' => validateInput($rol)
                 ];
                 $persBiz->assignRole($roleData);
             }
