@@ -15,10 +15,18 @@ $tablas = $adminBiz->getTablas();
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
         }
-        main {
+        header, main, footer {
             max-width: 800px;
             margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
         }
         h2 {
             text-align: center;
@@ -33,9 +41,15 @@ $tablas = $adminBiz->getTablas();
         a {
             text-decoration: none;
             color: #007BFF;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
         a:hover {
-            text-decoration: underline;
+            background-color: #d0d0d0;
         }
     </style>
 </head>
