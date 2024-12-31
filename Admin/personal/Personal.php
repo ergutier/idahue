@@ -9,9 +9,9 @@ $personas = $persBiz->getPersonas();
 $roles = $rolesBiz->getRoles();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $rut = htmlspecialchars(strip_tags($_POST['rut']));
-    $nombre = htmlspecialchars(strip_tags($_POST['nombre']));
-    $fono = htmlspecialchars(strip_tags($_POST['fono']));
+    $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
+    $fono = isset($_POST['fono']) ? $_POST['fono'] : '';
+    $ROL_id = isset($_POST['ROL_id']) ? $_POST['ROL_id'] : '';
     $ROL_id = $_POST['ROL_id'];
 
     if (isset($_POST['action']) && $_POST['action'] == 'delete') {
