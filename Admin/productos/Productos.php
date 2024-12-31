@@ -24,7 +24,7 @@ $ingredientesActivos = $prodBiz->getIngredientesActivos();
         <h2>Administrar Productos</h2>
         
         <!-- Botón para agregar productos -->
-        <button onclick="document.getElementById('addProductForm').style.display='block'">Agregar Producto</button>
+        <button class="button-primary" onclick="document.getElementById('addProductForm').style.display='block'">Agregar Producto</button>
 
         <!-- Formulario para agregar productos y asignar ingredientes activos -->
         <div id="addProductForm" style="display:none;">
@@ -108,8 +108,8 @@ $ingredientesActivos = $prodBiz->getIngredientesActivos();
                         <td><?php echo htmlspecialchars($producto['ID_PROV']); ?></td>
                         <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
                         <td><?php echo htmlspecialchars($producto['Fecha_venc']); ?></td>
-						<td><?php echo htmlspecialchars($producto['especie']); ?></td>
-                        <td>
+                        <td><?php echo htmlspecialchars($producto['especie']); ?></td>
+                        <td class="table-actions">
                             <a href="edit_producto.php?id=<?php echo $producto['id']; ?>">Editar</a>
                             <a href="delete_producto.php?id=<?php echo $producto['id']; ?>">Eliminar</a>
                             <a href="manage_ingredientes.php?id=<?php echo $producto['id']; ?>">Gestionar Ingredientes</a>

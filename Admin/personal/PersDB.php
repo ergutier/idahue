@@ -41,13 +41,40 @@ class PersDB {
         return $stmt->execute();
     }
 
-    public function deletePersona($rut) {
-        $query = "DELETE FROM ROL_PERSONA, PERSONA WHERE rut = :rut";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':rut', $rut);
-        return $stmt->execute();
-    }
+	public function deletePersona($rut) {
+		try {
+			// Iniciar transacción
+			$this->conn->beginTransaction();
 
+			// Eliminar referencias en la tabla fertilizacion
+			$sql = "DELETE FROM fertilizacion WHERE ID_pers = :rut";
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':rut', $rut);
+			$stmt->execute();
+
+			// Eliminar otras referencias en tablas dependientes según sea necesario
+			// Ejemplo: Eliminar referencias en otra tabla dependiente
+			$sql = "DELETE FROM rol_persona WHERE PERSONA_rut = :rut";
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':rut', $rut);
+			$stmt->execute();
+
+			// Eliminar persona
+			$sql = "DELETE FROM persona WHERE rut = :rut";
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':rut', $rut);
+			$stmt->execute();
+
+			// Confirmar transacción
+			$this->conn->commit();
+			echo "<p>Persona eliminada exitosamente.</p>";
+		} catch (PDOException $e) {
+			// Revertir transacción en caso de error
+			$this->conn->rollBack();
+			throw $e;
+		}
+	}
+    
     public function assignRole($data) {
         $query = "INSERT INTO ROL_PERSONA (ROL_id, PERSONA_rut) VALUES (:ROL_id, :PERSONA_rut)";
         $stmt = $this->conn->prepare($query);

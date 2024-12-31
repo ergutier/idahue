@@ -1,3 +1,4 @@
+/* General styles */
 body {
     font-family: 'Roboto', sans-serif;
     background-image: url('images/background.jpg');
@@ -7,7 +8,7 @@ body {
     color: #333;
     margin: 0;
     padding: 0 20px;
-    padding-top: 80px; /* Ajustar para el header */
+    padding-top: 120px; /* Ajustar para el header */
     padding-bottom: 60px; /* Ajustar para el footer */
     display: flex;
     flex-direction: column;
@@ -15,16 +16,25 @@ body {
     min-height: 100vh; /* Asegura que el body cubra al menos toda la altura de la ventana */
 }
 
+/* Header styles */
 header {
     width: 100%;
     background-color: rgba(76, 175, 80, 0.8);
-    padding: -30px;
+    padding: 10px 20px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     position: fixed;
     top: 0;
     z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 header img {
@@ -38,15 +48,77 @@ header h1 {
     margin: 0;
 }
 
+/* Navigation styles */
+.nav-menu {
+    background-color: #2E7D32; /* Un verde oscuro que destaca */
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+    position: fixed;
+    top: 70px; /* Ajuste para que el menú se alinee debajo del header */
+    z-index: 1000;
+}
+
+.nav-menu a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.nav-menu a:hover {
+    background-color: #1B5E20;
+}
+
+.nav-menu .submenu {
+    display: none;
+    position: absolute;
+    background-color: #1B5E20;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.nav-menu .submenu a {
+    float: none;
+    color: white;
+    padding: 12px 16px;
+}
+
+.nav-menu .submenu a:hover {
+    background-color: #004D40;
+}
+
+.nav-menu .dropdown:hover .submenu {
+    display: block;
+}
+
+/* Main content styles */
 main {
     width: 80%;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.7);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex: 1; /* Permite que el main crezca para ocupar el espacio disponible */
+    margin-bottom: 100px; /* Prevent content overlap with footer */
 }
 
+/* Welcome section with transparency */
+.welcome-section {
+    text-align: center;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.5); /* Fondo semitransparente */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* Ajuste para separarlo del contenido superior */
+    position: relative;
+    color: #333; /* Asegura que el texto sea legible */
+}
+
+/* Footer styles */
 footer {
     padding: 10px;
     background-color: rgba(76, 175, 80, 0.8);
@@ -57,19 +129,7 @@ footer {
     bottom: 0;
 }
 
-/*.button-primary {
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.button-primary:hover {
-    background-color: #45a049;
-}*/
+/* Form styles */
 form {
     display: flex;
     flex-wrap: wrap; /* Permite que los elementos se ajusten en varias líneas */
@@ -109,43 +169,6 @@ form select[multiple] {
 
 form button {
     align-self: flex-end;
-}
-
-/* Estilos de navegación y encabezado */
-.nav-menu {
-    background-color: #009879;
-    overflow: hidden;
-    margin-top: 60px; /* Ajuste para evitar que el menú quede escondido debajo del header */
-}
-
-.nav-menu a {
-    float: left;
-    display: block;
-    color: #ffffff;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.nav-menu a:hover {
-    background-color: #007a63;
-}
-
-.nav-menu a.active {
-    background-color: #005f49;
-}
-
-.main-content {
-    margin-top: 20px;
-}
-
-.welcome-section {
-    text-align: center;
-    padding: 40px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo de tablas y paginación */
@@ -225,6 +248,7 @@ table tbody tr:last-of-type {
     margin: 10px 0;
     font-size: 14px;
 }
+
 .button-primary {
     background-color: #4CAF50;
     color: #fff;
