@@ -11,8 +11,8 @@ $roles = $rolesBiz->getRoles();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
     $fono = isset($_POST['fono']) ? $_POST['fono'] : '';
+    $rut = isset($_POST['rut']) ? $_POST['rut'] : '';
     $ROL_id = isset($_POST['ROL_id']) ? $_POST['ROL_id'] : '';
-    $ROL_id = $_POST['ROL_id'];
 
     if (isset($_POST['action']) && $_POST['action'] == 'delete') {
         // Eliminar persona
