@@ -257,11 +257,28 @@ table tbody tr:last-of-type {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 200px; /* Cambiar para evitar que ocupen todo el ancho */
-    min-width: 100px; /* Añadir para dar un tamaño mínimo */
-    display: inline-block; /* Asegurar que los botones estén en línea */
+    width: auto; /* Ajustar el ancho */
+    min-width: 100px;
+    display: inline-block;
 }
 
 .button-primary:hover {
     background-color: #45a049;
+}
+
+.button-secondary {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.button-secondary:hover {
+    background-color: #e53935;
 }
