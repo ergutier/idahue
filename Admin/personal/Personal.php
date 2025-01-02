@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
     $fono = isset($_POST['fono']) ? $_POST['fono'] : '';
     $rut = isset($_POST['rut']) ? $_POST['rut'] : '';
-    $ROL_id = isset($_POST['ROL_id']) ? $_POST['ROL_id'] : '';
+    $ROL_id = isset($_POST['ROL_id']) ? $_POST['ROL_id'] : [];
 
     if (isset($_POST['action']) && $_POST['action'] == 'delete') {
         // Eliminar persona
@@ -132,10 +132,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <label for="ROL_id">Roles:</label>
                                     <select name="ROL_id[]" id="ROL_id" multiple required>
                                         <?php
-                                        // Obtener roles disponibles
+                                        $rolesAsignados = $persBiz->getRolesByPersona($persona['rut']); // Supongamos que esta función existe
                                         $roles = $rolesBiz->getRoles();
                                         while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
-                                            echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['nombre']) . "</option>";
+                                            $selected = in_array($row['id'], $rolesAsignados) ? 'selected' : '';
+                                            echo "<option value='" . htmlspecialchars($row['id']) . "' $selected>" . htmlspecialchars($row['nombre']) . "</option>";
                                         }
                                         ?>
                                     </select>
