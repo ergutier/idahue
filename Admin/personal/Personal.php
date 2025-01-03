@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Administración de Personal</title>
-    <link rel="stylesheet" href="path/to/styles.css"> <!-- Asegúrate de incluir el enlace correcto -->
+  <link rel="stylesheet" href="<?php echo CSS_URL; ?>">
 </head>
 <body>
     <?php

@@ -44,9 +44,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Agregar Nueva Persona</title>
-    <link rel="stylesheet" href="path/to/styles.css"> <!-- Asegúrate de incluir el enlace correcto -->
+	<link rel="stylesheet" href="<?php echo CSS_URL; ?>">
 </head>
 <body>
+	<?php
+		$pageHeader = "Administración de Personal";
+		include BASE_DR . 'shared/header.php';
+    ?>
     <main>
         <h2>Agregar Nueva Persona</h2>
         <form action="add_persona.php" method="post">
@@ -66,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="ROL_id">Roles:</label>
                 <select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
                     <?php
-                    while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
+                    while ($row = $rolesBiz->fetch(PDO::FETCH_ASSOC)) {
                         echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['nombre']) . "</option>";
                     }
                     ?>
@@ -77,5 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </main>
+	 <?php include BASE_DR . 'shared/footer.php'; ?>
 </body>
 </html>
