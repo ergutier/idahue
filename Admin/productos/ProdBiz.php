@@ -12,6 +12,10 @@ class ProdBiz {
         return $this->prodDB->getProductos();
     }
 
+    public function getFamilias() {
+        return $this->prodDB->getFamilias();
+    }
+
     public function getProveedores() {
         return $this->prodDB->getProveedores();
     }

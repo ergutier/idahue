@@ -16,6 +16,13 @@ class ProdDB {
         return $stmt;
     }
 
+    public function getFamilias() {
+        $query = "SELECT id, nombre FROM FAMILIA";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
     public function getProveedores() {
         $query = "SELECT rut, nombre FROM PROVEEDOR";
         $stmt = $this->conn->prepare($query);
