@@ -249,40 +249,6 @@ table tbody tr:last-of-type {
     font-size: 14px;
 }
 
-.button-primary {
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: auto; /* Ajustar el ancho */
-    min-width: 100px;
-    display: inline-block;
-}
-
-.button-primary:hover {
-    background-color: #45a049;
-}
-
-.button-secondary {
-    background-color: #f44336;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: auto;
-    min-width: 100px;
-    display: inline-block;
-}
-
-.button-secondary:hover {
-    background-color: #e53935;
-}
-
 /* Estilos mejorados para el campo de selección */
 .select-multiple {
     border: 1px solid #ccc;
@@ -303,4 +269,56 @@ table tbody tr:last-of-type {
 .select-multiple option:checked {
     background-color: #007bff;
     color: #fff;
+}
+
+/* Estilos para botones */
+.button-primary {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.button-primary:hover {
+    background-color: #45a049;
+}
+
+.button-secondary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.button-secondary:hover {
+    background-color: #0056b3;
+}
+
+.button-danger {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.button-danger:hover {
+    background-color: #d32f2f;
 }
