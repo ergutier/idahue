@@ -15,10 +15,7 @@ try {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = isset($_POST['nombre']) ? htmlspecialchars(strip_tags($_POST['nombre'])) : '';
-    $fono = isset($_POST['fono']) ? htmlspecialchars(strip_tags($_POST['fono'])) : '';
     $rut = isset($_POST['rut']) ? htmlspecialchars(strip_tags($_POST['rut'])) : '';
-    $ROL_id = isset($_POST['ROL_id']) ? array_map('htmlspecialchars', array_map('strip_tags', $_POST['ROL_id'])) : [];
 
     if (isset($_POST['action']) && $_POST['action'] == 'delete') {
         // Eliminar persona
@@ -27,29 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<p>Persona eliminada exitosamente.</p>";
         } catch (Exception $e) {
             echo "Error al eliminar persona: " . $e->getMessage();
-        }
-    } else {
-        // Agregar persona
-        $data = [
-            'rut' => $rut,
-            'nombre' => $nombre,
-            'fono' => $fono
-        ];
-
-        try {
-            $persBiz->addPersona($data);
-
-            foreach ($ROL_id as $rol) {
-                $roleData = [
-                    'PERSONA_rut' => $rut,
-                    'ROL_id' => $rol
-                ];
-                $persBiz->assignRole($roleData);
-            }
-
-            echo "<p>Persona y roles agregados exitosamente.</p>";
-        } catch (Exception $e) {
-            echo "Error al agregar persona: " . $e->getMessage();
         }
     }
 }
@@ -70,40 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <main>
         <h2>Administrar Personas</h2>
 
-        <!-- Botón para agregar personas -->
-        <button class="button-primary" onclick="document.getElementById('addPersonForm').style.display='block'">Agregar Persona</button>
-
-        <!-- Formulario para agregar personas y roles -->
-        <div id="addPersonForm" style="display:none;">
-            <h2>Agregar Nueva Persona</h2>
-            <form id="addPersonFormForm" action="Personal.php" method="post" onsubmit="return addPerson(event)">
-                <div class="form-group">
-                    <label for="rut">RUT:</label>
-                    <input type="text" name="rut" id="rut" required>
-                </div>
-                <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" name="nombre" id="nombre" required>
-                </div>
-                <div class="form-group">
-                    <label for="fono">Fono:</label>
-                    <input type="text" name="fono" id="fono" required>
-                </div>
-                <div class="form-group">
-                    <label for="ROL_id">Roles:</label>
-                    <select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
-                        <?php
-                        while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['nombre']) . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="button-primary">Agregar</button>
-                </div>
-            </form>
-        </div>
+        <!-- Enlace al formulario de agregar persona -->
+        <a href="add_persona.php" class="button-primary">Agregar Persona</a>
 
         <!-- Mostrar registros de personas -->
         <table>
@@ -139,41 +81,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <button class="button-secondary" onclick="document.getElementById('assignRoleForm<?php echo $persona['rut']; ?>').style.display='block'">Asignar Rol</button>
                             </td>
                         </tr>
-						<!-- Formulario para asignar roles -->
-						<tr id="assignRoleForm<?php echo htmlspecialchars($persona['rut']); ?>" style="display:none;">
-							<td colspan="4">
-								<form action="Personal.php" method="post">
-									<input type="hidden" name="rut" value="<?php echo htmlspecialchars($persona['rut']); ?>">
-									<div class="form-group">
-										<label for="ROL_id">Roles:</label>
-										<select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
-											<?php
-											// Obtener roles asignados
-											try {
-												$rolesAsignadosStmt = $rolesBiz->getRolesAsignados($persona['rut']);
-												$rolesAsignados = [];
-												while ($row = $rolesAsignadosStmt->fetch(PDO::FETCH_ASSOC)) {
-													$rolesAsignados[] = $row['id'];
-												}
+                        <!-- Formulario para asignar roles -->
+                        <tr id="assignRoleForm<?php echo htmlspecialchars($persona['rut']); ?>" style="display:none;">
+                            <td colspan="4">
+                                <form action="Personal.php" method="post">
+                                    <input type="hidden" name="rut" value="<?php echo htmlspecialchars($persona['rut']); ?>">
+                                    <div class="form-group">
+                                        <label for="ROL_id">Roles:</label>
+                                        <select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
+                                            <?php
+                                            // Obtener roles asignados
+                                            try {
+                                                $rolesAsignadosStmt = $rolesBiz->getRolesAsignados($persona['rut']);
+                                                $rolesAsignados = [];
+                                                while ($row = $rolesAsignadosStmt->fetch(PDO::FETCH_ASSOC)) {
+                                                    $rolesAsignados[] = $row['id'];
+                                                }
 
-												// Obtener todos los roles
-												$roles = $rolesBiz->getRoles();
-												while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
-													$selected = in_array($row['id'], $rolesAsignados) ? 'selected' : '';
-													echo "<option value='" . htmlspecialchars($row['id']) . "' $selected>" . htmlspecialchars($row['nombre']) . "</option>";
-												}
-											} catch (Exception $e) {
-												echo "Error al obtener roles: " . $e->getMessage();
-											}
-											?>
-										</select>
-									</div>
-									<div class="form-group">
-										<button type="submit" class="button-primary">Asignar Roles</button>
-									</div>
-								</form>
-							</td>
-						</tr>
+                                                // Obtener todos los roles
+                                                $roles = $rolesBiz->getRoles();
+                                                while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
+                                                    $selected = in_array($row['id'], $rolesAsignados) ? 'selected' : '';
+                                                    echo "<option value='" . htmlspecialchars($row['id']) . "' $selected>" . htmlspecialchars($row['nombre']) . "</option>";
+                                                }
+                                            } catch (Exception $e) {
+                                                echo "Error al obtener roles: " . $e->getMessage();
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="button-primary">Asignar Roles</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
                     <?php } 
                 } else {
                     echo "<tr><td colspan='4'>No se encontraron registros de personas.</td></tr>";
@@ -183,27 +125,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </table>
     </main>
     <?php include BASE_DR . 'shared/footer.php'; ?>
-    <script>
-        function addPerson(event) {
-            event.preventDefault();
-            
-            const form = document.getElementById('addPersonFormForm');
-            const formData = new FormData(form);
-            
-            fetch('Personal.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                // Actualizar la tabla de usuarios
-                document.getElementById('personasTableBody').innerHTML = data;
-                // Limpiar y ocultar el formulario
-                form.reset();
-                document.getElementById('addPersonForm').style.display = 'none';
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script>
 </body>
 </html>
