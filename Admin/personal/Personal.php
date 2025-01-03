@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/idahue/config.php';
 include_once BASE_DR . 'Admin/Personal/PersBiz.php';
+include BASE_DR . 'Roles/RolesBiz.php';
 
 $persBiz = new PersBiz();
 $rolesBiz = new RolesBiz();
@@ -147,7 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <label for="ROL_id">Roles:</label>
                                         <select name="ROL_id[]" id="ROL_id" multiple required>
                                             <?php
-                                            include BASE_DR . 'Roles/RolesBiz.php';
                                             $rolesAsignados = $persBiz->getRolesByPersona($persona['rut']); // Supongamos que esta función existe
                                             $roles = $rolesBiz->getRoles();
                                             while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
