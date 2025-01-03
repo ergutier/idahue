@@ -1,7 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/idahue/config.php';
 include_once BASE_DR . 'Admin/Personal/PersBiz.php';
-include BASE_DR . 'Roles/RolesBiz.php';
+include_once BASE_DR . 'Roles/RolesBiz.php';
 
 $persBiz = new PersBiz();
 $rolesBiz = new RolesBiz();
