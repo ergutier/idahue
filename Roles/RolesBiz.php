@@ -18,7 +18,7 @@ class RolesBiz {
 
     public function getRolesAsignados($persona) {
         return $this->rolesDB->getRolesAsignados($persona);
-    }
+    }	
 
     public function asignarRoles($persona, $roles) {
         $this->rolesDB->deleteRolesPersona($persona);

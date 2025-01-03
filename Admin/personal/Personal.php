@@ -139,35 +139,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <button class="button-secondary" onclick="document.getElementById('assignRoleForm<?php echo $persona['rut']; ?>').style.display='block'">Asignar Rol</button>
                             </td>
                         </tr>
-                        <!-- Formulario para asignar roles -->
-                        <tr id="assignRoleForm<?php echo $persona['rut']; ?>" style="display:none;">
-                            <td colspan="4">
-                                <form action="Personal.php" method="post">
-                                    <input type="hidden" name="rut" value="<?php echo htmlspecialchars($persona['rut']); ?>">
-                                    <div class="form-group">
-                                        <label for="ROL_id">Roles:</label>
-                                        <select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
-                                            <?php
-                                            $rolesAsignadosStmt = $rolesBiz->getRolesAsignados($persona['rut']);
-                                            $rolesAsignados = [];
-                                            while ($row = $rolesAsignadosStmt->fetch(PDO::FETCH_ASSOC)) {
-                                                $rolesAsignados[] = $row['id'];
-                                            }
+						<!-- Formulario para asignar roles -->
+						<tr id="assignRoleForm<?php echo htmlspecialchars($persona['rut']); ?>" style="display:none;">
+							<td colspan="4">
+								<form action="Personal.php" method="post">
+									<input type="hidden" name="rut" value="<?php echo htmlspecialchars($persona['rut']); ?>">
+									<div class="form-group">
+										<label for="ROL_id">Roles:</label>
+										<select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
+											<?php
+											// Obtener roles asignados
+											try {
+												$rolesAsignadosStmt = $rolesBiz->getRolesAsignados($persona['rut']);
+												$rolesAsignados = [];
+												while ($row = $rolesAsignadosStmt->fetch(PDO::FETCH_ASSOC)) {
+													$rolesAsignados[] = $row['id'];
+												}
 
-                                            $roles = $rolesBiz->getRoles();
-                                            while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
-                                                $selected = in_array($row['id'], $rolesAsignados) ? 'selected' : '';
-                                                echo "<option value='" . htmlspecialchars($row['id']) . "' $selected>" . htmlspecialchars($row['nombre']) . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="button-primary">Asignar Roles</button>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
+												// Obtener todos los roles
+												$roles = $rolesBiz->getRoles();
+												while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
+													$selected = in_array($row['id'], $rolesAsignados) ? 'selected' : '';
+													echo "<option value='" . htmlspecialchars($row['id']) . "' $selected>" . htmlspecialchars($row['nombre']) . "</option>";
+												}
+											} catch (Exception $e) {
+												echo "Error al obtener roles: " . $e->getMessage();
+											}
+											?>
+										</select>
+									</div>
+									<div class="form-group">
+										<button type="submit" class="button-primary">Asignar Roles</button>
+									</div>
+								</form>
+							</td>
+						</tr>
                     <?php } 
                 } else {
                     echo "<tr><td colspan='4'>No se encontraron registros de personas.</td></tr>";

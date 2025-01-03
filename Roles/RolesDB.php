@@ -23,13 +23,13 @@ class RolesDB {
         return $stmt;
     }
 
-    public function getRolesAsignados($persona) {
-        $query = "SELECT ROL_id FROM ROL_PERSONA WHERE PERSONA_rut = :persona";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':persona', $persona);
-        $stmt->execute();
-        return $stmt;
-    }
+	public function getRolesAsignados($rut) {
+		$query = "SELECT ROL_id as id FROM ROL_persona WHERE PERSONA_rut = :rut";
+		$stmt = $this->conn->prepare($query);
+		$stmt->bindParam(':rut', $rut);
+		$stmt->execute();
+		return $stmt;
+	}
 
     public function deleteRolesPersona($persona) {
         $query = "DELETE FROM ROL_PERSONA WHERE PERSONA_rut = :persona";
