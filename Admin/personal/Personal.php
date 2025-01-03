@@ -148,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <label for="ROL_id">Roles:</label>
                                         <select name="ROL_id[]" id="ROL_id" multiple required>
                                             <?php
-                                            $rolesAsignados = $persBiz->getRolesAsignados($persona['rut']); // Supongamos que esta función existe
+                                            $rolesAsignados = $rolesBiz->getRolesAsignados($persona['rut']); // Supongamos que esta función existe
                                             $roles = $rolesBiz->getRoles();
                                             while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
                                                 $selected = in_array($row['id'], $rolesAsignados) ? 'selected' : '';
