@@ -172,8 +172,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </table>
     </main>
     <?php include BASE_DR . 'shared/footer.php'; ?>
-    <footer>
-        <p>Footer Content</p>
-    </footer>
 </body>
 </html>
