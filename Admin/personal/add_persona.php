@@ -36,6 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (Exception $e) {
         echo "Error al agregar persona: " . $e->getMessage();
     }
+} else {
+    // Obtener roles para mostrarlos en el formulario
+    try {
+        $roles = $rolesBiz->getRoles();
+    } catch (Exception $e) {
+        echo "Error al obtener roles: " . $e->getMessage();
+        exit;
+    }
 }
 ?>
 
@@ -44,12 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Agregar Nueva Persona</title>
-	<link rel="stylesheet" href="<?php echo CSS_URL; ?>">
+    <link rel="stylesheet" href="<?php echo CSS_URL; ?>">
 </head>
 <body>
-	<?php
-		$pageHeader = "Administración de Personal";
-		include BASE_DR . 'shared/header.php';
+    <?php
+    $pageHeader = "Administración de Personal";
+    include BASE_DR . 'shared/header.php';
     ?>
     <main>
         <h2>Agregar Nueva Persona</h2>
@@ -70,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="ROL_id">Roles:</label>
                 <select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
                     <?php
-                    while ($row = $rolesBiz->fetch(PDO::FETCH_ASSOC)) {
+                    while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
                         echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['nombre']) . "</option>";
                     }
                     ?>
@@ -81,6 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </main>
-	 <?php include BASE_DR . 'shared/footer.php'; ?>
+    <?php include BASE_DR . 'shared/footer.php'; ?>
 </body>
 </html>
