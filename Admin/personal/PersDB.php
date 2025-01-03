@@ -23,14 +23,52 @@ class PersDB {
         return $stmt;
     }
 
-    public function addPersona($data) {
-        $query = "INSERT INTO PERSONA (rut, nombre, fono) VALUES (:rut, :nombre, :fono)";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':rut', $data['rut']);
-        $stmt->bindParam(':nombre', $data['nombre']);
-        $stmt->bindParam(':fono', $data['fono']);
-        return $stmt->execute();
-    }
+	public function addPersona($data) {
+		try {
+			$this->conn->beginTransaction();
+
+			$query = "INSERT INTO PERSONA (rut, nombre, fono) VALUES (:rut, :nombre, :fono)";
+			$stmt = $this->conn->prepare($query);
+			$stmt->bindParam(':rut', $data['rut']);
+			$stmt->bindParam(':nombre', $data['nombre']);
+			$stmt->bindParam(':fono', $data['fono']);
+			$stmt->execute();
+
+			$this->conn->commit();
+			return true;
+		} catch (PDOException $e) {
+			$this->conn->rollBack();
+			throw $e;
+		}
+	}
+
+	public function deletePersona($rut) {
+		try {
+			$this->conn->beginTransaction();
+
+			$sql = "DELETE FROM fertilizacion WHERE ID_pers = :rut";
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':rut', $rut);
+			$stmt->execute();
+
+			$sql = "DELETE FROM rol_persona WHERE PERSONA_rut = :rut";
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':rut', $rut);
+			$stmt->execute();
+
+			$sql = "DELETE FROM persona WHERE rut = :rut";
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bindParam(':rut', $rut);
+			$stmt->execute();
+
+			$this->conn->commit();
+			echo "<p>Persona eliminada exitosamente.</p>";
+		} catch (PDOException $e) {
+			$this->conn->rollBack();
+			throw $e;
+		}
+	}
+		
 
     public function updatePersona($data) {
         $query = "UPDATE PERSONA SET nombre = :nombre, fono = :fono WHERE rut = :rut";
@@ -41,7 +79,7 @@ class PersDB {
         return $stmt->execute();
     }
 
-	public function deletePersona($rut) {
+	/*blic function deletePersona($rut) {
 		try {
 			// Iniciar transacción
 			$this->conn->beginTransaction();
@@ -73,7 +111,7 @@ class PersDB {
 			$this->conn->rollBack();
 			throw $e;
 		}
-	}
+	}*/
     
     public function assignRole($data) {
         $query = "INSERT INTO ROL_PERSONA (ROL_id, PERSONA_rut) VALUES (:ROL_id, :PERSONA_rut)";

@@ -282,3 +282,25 @@ table tbody tr:last-of-type {
 .button-secondary:hover {
     background-color: #e53935;
 }
+
+/* Estilos mejorados para el campo de selección */
+.select-multiple {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background-color: #f9f9f9;
+}
+
+.select-multiple option {
+    padding: 4px;
+    background-color: #fff;
+}
+
+.select-multiple option:checked {
+    background-color: #007bff;
+    color: #fff;
+}

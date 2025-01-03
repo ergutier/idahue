@@ -15,10 +15,10 @@ try {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
-    $fono = isset($_POST['fono']) ? $_POST['fono'] : '';
-    $rut = isset($_POST['rut']) ? $_POST['rut'] : '';
-    $ROL_id = isset($_POST['ROL_id']) ? $_POST['ROL_id'] : [];
+    $nombre = isset($_POST['nombre']) ? htmlspecialchars(strip_tags($_POST['nombre'])) : '';
+    $fono = isset($_POST['fono']) ? htmlspecialchars(strip_tags($_POST['fono'])) : '';
+    $rut = isset($_POST['rut']) ? htmlspecialchars(strip_tags($_POST['rut'])) : '';
+    $ROL_id = isset($_POST['ROL_id']) ? array_map('htmlspecialchars', array_map('strip_tags', $_POST['ROL_id'])) : [];
 
     if (isset($_POST['action']) && $_POST['action'] == 'delete') {
         // Eliminar persona
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             foreach ($ROL_id as $rol) {
                 $roleData = [
                     'PERSONA_rut' => $rut,
-                    'ROL_id' => htmlspecialchars(strip_tags($rol))
+                    'ROL_id' => $rol
                 ];
                 $persBiz->assignRole($roleData);
             }
@@ -61,6 +61,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Administración de Personal</title>
     <link rel="stylesheet" href="<?php echo CSS_URL; ?>">
+    <style>
+        /* Estilos mejorados para el campo de selección */
+        .select-multiple {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #f9f9f9;
+        }
+
+        .select-multiple option {
+            padding: 4px;
+            background-color: #fff;
+        }
+
+        .select-multiple option:checked {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <?php
@@ -69,14 +92,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ?>
     <main>
         <h2>Administrar Personas</h2>
-        
+
         <!-- Botón para agregar personas -->
         <button class="button-primary" onclick="document.getElementById('addPersonForm').style.display='block'">Agregar Persona</button>
 
         <!-- Formulario para agregar personas y roles -->
         <div id="addPersonForm" style="display:none;">
             <h2>Agregar Nueva Persona</h2>
-            <form action="Personal.php" method="post">
+            <form id="addPersonForm" action="Personal.php" method="post" onsubmit="return addPerson(event)">
                 <div class="form-group">
                     <label for="rut">RUT:</label>
                     <input type="text" name="rut" id="rut" required>
@@ -91,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                     <label for="ROL_id">Roles:</label>
-                    <select name="ROL_id[]" id="ROL_id" multiple required>
+                    <select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
                         <?php
                         while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
                             echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['nombre']) . "</option>";
@@ -104,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </form>
         </div>
-        
+
         <!-- Mostrar registros de personas -->
         <table>
             <thead>
@@ -115,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="personasTableBody">
                 <?php 
                 if ($personas) {
                     while ($persona = $personas->fetch(PDO::FETCH_ASSOC)) { ?>
@@ -146,9 +169,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input type="hidden" name="rut" value="<?php echo htmlspecialchars($persona['rut']); ?>">
                                     <div class="form-group">
                                         <label for="ROL_id">Roles:</label>
-                                        <select name="ROL_id[]" id="ROL_id" multiple required>
+                                        <select name="ROL_id[]" id="ROL_id" class="select-multiple" multiple required>
                                             <?php
-                                            $rolesAsignados = $rolesBiz->getRolesAsignados($persona['rut']); // Supongamos que esta función existe
+                                            $rolesAsignadosStmt = $rolesBiz->getRolesAsignados($persona['rut']); // Supongamos que esta función existe
+                                            $rolesAsignados = [];
+                                            while ($row = $rolesAsignadosStmt->fetch(PDO::FETCH_ASSOC)) {
+                                                $rolesAsignados[] = $row['id'];
+                                            }
+
                                             $roles = $rolesBiz->getRoles();
                                             while ($row = $roles->fetch(PDO::FETCH_ASSOC)) {
                                                 $selected = in_array($row['id'], $rolesAsignados) ? 'selected' : '';
@@ -172,5 +200,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </table>
     </main>
     <?php include BASE_DR . 'shared/footer.php'; ?>
+    <script>
+        function addPerson(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('addPersonForm');
+            const formData = new FormData(form);
+            
+            fetch('Personal.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Actualizar la tabla de usuarios
+                document.getElementById('personasTableBody').innerHTML = data;
+                // Limpiar y ocultar el formulario
+                form.reset();
+                document.getElementById('addPersonForm').style.display = 'none';
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
