@@ -7,6 +7,9 @@ $editingProduct = null;
 
 try {
     $productos = $prodBiz->getProductos();
+    $familias = $prodBiz->getFamilias();
+    $proveedores = $prodBiz->getProveedores();
+    $ingredientesActivos = $prodBiz->getIngredientesActivos();
 } catch (Exception $e) {
     echo "Error al obtener datos: " . $e->getMessage();
     exit;
@@ -18,6 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cantidad = isset($_POST['cantidad']) ? htmlspecialchars(strip_tags($_POST['cantidad'])) : '';
     $fecha_venc = isset($_POST['fecha_venc']) ? htmlspecialchars(strip_tags($_POST['fecha_venc'])) : '';
     $especie = isset($_POST['especie']) ? htmlspecialchars(strip_tags($_POST['especie'])) : '';
+    $ID_Fam = isset($_POST['ID_Fam']) ? htmlspecialchars(strip_tags($_POST['ID_Fam'])) : '';
+    $ID_PROV = isset($_POST['ID_PROV']) ? htmlspecialchars(strip_tags($_POST['ID_PROV'])) : '';
+    $ID_INGACT = isset($_POST['ID_INGACT']) ? htmlspecialchars(strip_tags($_POST['ID_INGACT'])) : '';
 
     if (isset($_POST['action'])) {
         if ($_POST['action'] == 'add') {
@@ -27,7 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     'nombre' => $nombre,
                     'cantidad' => $cantidad,
                     'Fecha_venc' => $fecha_venc,
-                    'especie' => $especie
+                    'especie' => $especie,
+                    'ID_Fam' => $ID_Fam,
+                    'ID_PROV' => $ID_PROV,
+                    'ID_INGACT' => $ID_INGACT
                 ]);
                 echo "<p>Producto agregado exitosamente.</p>";
             } catch (Exception $e) {
@@ -41,7 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     'nombre' => $nombre,
                     'cantidad' => $cantidad,
                     'Fecha_venc' => $fecha_venc,
-                    'especie' => $especie
+                    'especie' => $especie,
+                    'ID_Fam' => $ID_Fam,
+                    'ID_PROV' => $ID_PROV,
+                    'ID_INGACT' => $ID_INGACT
                 ]);
                 echo "<p>Producto actualizado exitosamente.</p>";
             } catch (Exception $e) {
@@ -102,6 +114,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="date" name="fecha_venc" value="<?php echo $editingProduct ? htmlspecialchars($editingProduct['Fecha_venc']) : ''; ?>" required><br>
             <label>Especie:</label><br>
             <input type="text" name="especie" value="<?php echo $editingProduct ? htmlspecialchars($editingProduct['especie']) : ''; ?>" required><br>
+            <label>Familia:</label><br>
+            <select name="ID_Fam" required>
+                <?php while ($familia = $familias->fetch(PDO::FETCH_ASSOC)): ?>
+                    <option value="<?php echo htmlspecialchars($familia['id']); ?>" 
+                        <?php echo $editingProduct && $editingProduct['ID_Fam'] == $familia['id'] ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($familia['nombre']); ?>
+                    </option>
+                <?php endwhile; ?>
+            </select><br>
+            <label>Proveedor:</label><br>
+            <select name="ID_PROV" required>
+                <?php while ($proveedor = $proveedores->fetch(PDO::FETCH_ASSOC)): ?>
+                    <option value="<?php echo htmlspecialchars($proveedor['rut']); ?>" 
+                        <?php echo $editingProduct && $editingProduct['ID_PROV'] == $proveedor['rut'] ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($proveedor['nombre']); ?>
+                    </option>
+                <?php endwhile; ?>
+            </select><br>
+            <label>Ingrediente Activo:</label><br>
+            <select name="ID_INGACT" required>
+                <?php while ($ingrediente = $ingredientesActivos->fetch(PDO::FETCH_ASSOC)): ?>
+                    <option value="<?php echo htmlspecialchars($ingrediente['id']); ?>" 
+                        <?php echo $editingProduct && $editingProduct['ID_INGACT'] == $ingrediente['id'] ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($ingrediente['nombre']); ?>
+                    </option>
+                <?php endwhile; ?>
+            </select><br>
             <button type="submit" class="button-primary"><?php echo $editingProduct ? 'Actualizar Producto' : 'Agregar Producto'; ?></button>
         </form>
 
